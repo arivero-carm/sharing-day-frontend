@@ -27,7 +27,12 @@ const SECCIONES = [
 ];
 
 export default function SharingDayPage() {
-  const [seccion, setSeccion] = useState<number>(0);
+  const params = new URLSearchParams(window.location.search);
+
+  const [seccion, setSeccion] = useState<number>(Number(params.get("seccion")) ?? 0);
+
+  const [readOnly] = useState<boolean>(!!params.get("seccion"));
+
   const [documento, setDocumento] = useState("");
   const [buscando, setBuscando] = useState(false);
   const [mensaje, setMensaje] = useState("");
@@ -223,6 +228,7 @@ export default function SharingDayPage() {
               <label htmlFor="seccion">Sección *</label>
               <select
                 id="seccion"
+                disabled={readOnly}
                 value={seccion!}
                 onChange={async (event) => {
                   setSeccion(Number(event.target.value));
