@@ -63,7 +63,8 @@ export async function obtenerTurnos(
 export async function registrarParticipacion(
   _datos: RegistrarParticipacionRequest,
 ): Promise<void> {
-  throw new Error(
-    "El registro de participación está pendiente de integración con el backend.",
-  );
+  await api<void>('/Sharingday/Inscripcion', {
+    method: 'POST',
+    body: JSON.stringify(_datos),
+  });
 }
