@@ -40,6 +40,7 @@ export default function SharingDayPage() {
   const [tipoMensaje, setTipoMensaje] = useState<
     "error" | "info" | "exito"
   >("info");
+  
 
   const [mostrarModalSinCupos, setMostrarModalSinCupos] = useState(false);
 
@@ -155,39 +156,52 @@ export default function SharingDayPage() {
         }
 
     async function registrarTurno() {
-        setMensajeRegistro("");
-        setRegistroExitoso(false);
+    setMensajeRegistro("");
+    setRegistroExitoso(false);
 
-        if (codigoPariente === null) {
-            setMensajeRegistro("Primero busca el documento del padre de familia.");
-            return;
-        }
+    if (codigoPariente === null) {
+        setMensajeRegistro("Primero busca el documento del padre de familia.");
+        return;
+    }
 
-        if (turnoSeleccionado === null) {
-            setMensajeRegistro("Selecciona un curso y horario.");
-            return;
-        }
+    if (turnoSeleccionado === null) {
+        setMensajeRegistro("Selecciona un curso y horario.");
+        return;
+    }
 
-        setRegistrando(true);
+    setRegistrando(true);
 
-        try {
-            await registrarParticipacion({
-            codigoPariente: codigoPariente,
-            CodigoTurno: turnoSeleccionado,
-            });
+    try {
+        await registrarParticipacion({
+        codigoPariente,
+        CodigoTurno: turnoSeleccionado,
+        });
 
-            setRegistroExitoso(true);
-            setMensajeRegistro("¡Tu participación se registró correctamente!");
-        } catch (error: unknown) {
-            setMensajeRegistro(
-            error instanceof Error
-                ? error.message
-                : "No se pudo registrar la participación.",
-            );
-        } finally {
-            setRegistrando(false);
-        }
-        }
+        // Mostrar confirmación de registro exitoso
+        setRegistroExitoso(true);
+        setMensajeRegistro("¡Tu participación se registró correctamente!");
+
+        // Limpiar el formulario después de registrar
+        setDocumento("");
+        setSeccion(0);
+        setCodigoPariente(null);
+        setTurnoSeleccionado(null);
+        setTurnos([]);
+        setMostrarHorarios(false);
+        setMensaje("");
+        setErrorTurnos("");
+        setMostrarModalSinCupos(false);
+
+    } catch (error: unknown) {
+        setMensajeRegistro(
+        error instanceof Error
+            ? error.message
+            : "No se pudo registrar la participación."
+        );
+    } finally {
+        setRegistrando(false);
+    }
+    }
 
   return (
     <main className="sharing-page">
