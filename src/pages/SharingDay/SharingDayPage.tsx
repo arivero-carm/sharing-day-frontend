@@ -1,77 +1,186 @@
-import { useState } from "react";
-import { CalendarDays, Clock3, Search, UserRound } from "lucide-react";
+
+import { useState, useEffect } from "react";
+import {
+  CalendarDays,
+  Clock3,
+  Search,
+  UserRound,
+  BookOpen,
+} from "lucide-react";
+
 import "../../styles/SharingDayPage.css";
 import logo from "../../assets/dia-del-logro-logo.png";
-import { buscarPadreFamilia, obtenerTurnos } from "../../services/SharingDayService";
+
+import {
+  buscarPadreFamilia,
+  obtenerTurnos,
+  registrarParticipacion,
+} from "../../services/SharingDayService";
+
+import type { Turno } from "../../types/sharing-day.types";
 
 const SECCIONES = [
-  {
-    descripcion: "A",
-    id: 1
-},
-{
-    descripcion: "B",
-    id: 2
-},
-{
-    descripcion: "C",
-    id: 3
-},
-{
-    descripcion: "D",
-    id: 4
-},
+  { descripcion: "A", id: 1 },
+  { descripcion: "B", id: 2 },
+  { descripcion: "C", id: 3 },
+  { descripcion: "D", id: 4 },
 ];
 
 export default function SharingDayPage() {
-  const [seccion, setSeccion] = useState<number>(1);
+  const [seccion, setSeccion] = useState<number>(0);
   const [documento, setDocumento] = useState("");
   const [buscando, setBuscando] = useState(false);
   const [mensaje, setMensaje] = useState("");
-  const [tipoMensaje, setTipoMensaje] = useState<"error" | "info" | "exito">(
-    "info",
-  );
+  const [codigoPariente, setCodigoPariente] = useState<number | null>(null);
+  const [tipoMensaje, setTipoMensaje] = useState<
+    "error" | "info" | "exito"
+  >("info");
 
-  async function buscarPadre() {
-    setMensaje("");
+  // Estados para los cursos y horarios
+  const [turnos, setTurnos] = useState<Turno[]>([]);
+  const [cargandoTurnos, setCargandoTurnos] = useState(false);
+  const [errorTurnos, setErrorTurnos] = useState("");
+  const [turnoSeleccionado, setTurnoSeleccionado] = useState<number | null>(null);
 
-    if (!seccion) {
-      setTipoMensaje("error");
-      setMensaje("Selecciona la sección del estudiante.");
-      return;
-    }
+  const [registrando, setRegistrando] = useState(false);
+  const [mensajeRegistro, setMensajeRegistro] = useState("");
+  const [registroExitoso, setRegistroExitoso] = useState(false);
+  const [mostrarHorarios, setMostrarHorarios] = useState(false);
 
-    if (![8, 9].includes(documento.length)) {
-      setTipoMensaje("error");
-      setMensaje("Ingresa un documento válido de 8 o 9 dígitos.");
-      return;
-    }
+  // Cargar los cursos y horarios cuando se selecciona una sección
+    useEffect(() => {
+        if (!mostrarHorarios || !seccion) {
+            setTurnos([]);
+            setErrorTurnos("");
+            setCargandoTurnos(false);
+            return;
+        }
 
-    setBuscando(true);
-  
-    try {
-      
-      const response = await buscarPadreFamilia({
-        codigoGrado: 6,
-        codigoSeccion: SECCIONES.find(s => s.id === seccion)?.id || 0,
-        codigoTipoDocumento: 2,
-        numeroDocumento: documento,
-      })
-      
-      setTipoMensaje("exito");
-      setMensaje(
-        response?.nombreCompleto ?? ''
-      );
+        let cancelado = false;
 
-    } catch (error: any) {
-      setTipoMensaje("error");
-      setMensaje(
-        error.message ?? "Los datos del padre de familia se consultarán cuando se integre el backend.",
-      );
-    } finally {
-      setBuscando(false);
-    }
-  }
+        async function cargarTurnos() {
+            setCargandoTurnos(true);
+            setErrorTurnos("");
+            setTurnos([]);
+
+            try {
+            const resultado = await obtenerTurnos(6, seccion);
+
+            if (!cancelado) {
+                setTurnos(resultado);
+            }
+            } catch (error: unknown) {
+            if (!cancelado) {
+                setErrorTurnos(
+                error instanceof Error
+                    ? error.message
+                    : "No se pudieron cargar los horarios.",
+                );
+            }
+            } finally {
+            if (!cancelado) {
+                setCargandoTurnos(false);
+            }
+            }
+        }
+
+        void cargarTurnos();
+
+        return () => {
+            cancelado = true;
+        };
+    }, [mostrarHorarios, seccion]);
+
+  // Buscar al padre o apoderado
+    async function buscarPadre() {
+        setMensaje("");
+        setCodigoPariente(null);
+        setMostrarHorarios(false);
+        setTurnoSeleccionado(null);
+        setMensajeRegistro("");
+        setRegistroExitoso(false);
+        setTurnos([]);
+
+        if (!seccion) {
+            setTipoMensaje("error");
+            setMensaje("Selecciona la sección del estudiante.");
+            return;
+        }
+
+        if (!/^\d{8,9}$/.test(documento.trim())) {
+            setTipoMensaje("error");
+            setMensaje("Ingresa un documento válido de 8 o 9 dígitos.");
+            return;
+        }
+
+        setBuscando(true);
+
+        try {
+            const response = await buscarPadreFamilia({
+            codigoGrado: 6,
+            codigoSeccion: seccion,
+            codigoTipoDocumento: 2,
+            numeroDocumento: documento.trim(),
+            });
+
+            if (!response || !response.codigoPariente) {
+            setTipoMensaje("error");
+            setMensaje("No se encontraron los datos del padre de familia.");
+            return;
+            }
+
+            setCodigoPariente(Number(response.codigoPariente));
+            setTipoMensaje("exito");
+            setMensaje(response.nombreCompleto ?? "");
+
+            // Mostrar los horarios después de encontrar al padre.
+            setMostrarHorarios(true);
+        } catch (error: unknown) {
+            setTipoMensaje("error");
+            setMensaje(
+            error instanceof Error
+                ? error.message
+                : "No se pudieron consultar los datos del padre de familia.",
+            );
+        } finally {
+            setBuscando(false);
+        }
+        }
+
+    async function registrarTurno() {
+        setMensajeRegistro("");
+        setRegistroExitoso(false);
+
+        if (codigoPariente === null) {
+            setMensajeRegistro("Primero busca el documento del padre de familia.");
+            return;
+        }
+
+        if (turnoSeleccionado === null) {
+            setMensajeRegistro("Selecciona un curso y horario.");
+            return;
+        }
+
+        setRegistrando(true);
+
+        try {
+            await registrarParticipacion({
+            codigoPariente: codigoPariente,
+            CodigoTurno: turnoSeleccionado,
+            });
+
+            setRegistroExitoso(true);
+            setMensajeRegistro("¡Tu participación se registró correctamente!");
+        } catch (error: unknown) {
+            setMensajeRegistro(
+            error instanceof Error
+                ? error.message
+                : "No se pudo registrar la participación.",
+            );
+        } finally {
+            setRegistrando(false);
+        }
+        }
 
   return (
     <main className="sharing-page">
@@ -124,7 +233,6 @@ export default function SharingDayPage() {
 
                     console.log(`[TURNOS:]`, turnos)
                   } catch (error) {
-                    console.log(error)
                   }
                 }}
                 required
@@ -188,28 +296,166 @@ export default function SharingDayPage() {
               {mensaje}
             </div>
           )}
-
-          <section className="sharing-turnos">
+        
+        <section className="sharing-turnos">
             <div className="sharing-turnos-titulo">
-              <Clock3 size={20} aria-hidden="true" />
-              <h2>Cursos y horarios disponibles</h2>
+                <Clock3 size={20} aria-hidden="true" />
+                <h2>Cursos y horarios disponibles</h2>
             </div>
 
             <p>
-              Después de identificar al padre de familia, se mostrarán los
-              cursos correspondientes a la sección seleccionada.
+                Selecciona el curso y horario en el que deseas participar.
+                Solo puedes elegir uno.
             </p>
 
-            <div className="sharing-vacio">
-              <CalendarDays size={28} aria-hidden="true" />
+            {cargandoTurnos ? (
+                <div className="sharing-vacio" role="status">
+                <strong>Cargando horarios...</strong>
+                <span>Estamos consultando los cursos disponibles.</span>
+                </div>
+            ) : errorTurnos ? (
+                <div
+                className="sharing-mensaje sharing-mensaje-error"
+                role="alert"
+                >
+                {errorTurnos}
+                </div>
+            ) : !seccion ? (
+                <div className="sharing-vacio">
+                <CalendarDays size={28} aria-hidden="true" />
+                <strong>Selecciona una sección</strong>
+                <span>Los cursos y horarios aparecerán aquí.</span>
+                </div>
+            ) : turnos.length === 0 ? (
+                <div className="sharing-vacio">
+                <CalendarDays size={28} aria-hidden="true" />
+                <strong>No hay horarios disponibles</strong>
+                <span>No se encontraron cursos para esta sección.</span>
+                </div>
+            ) : (
+                <>
+                <div className="sharing-lista-turnos">
+                    {turnos.map((turno) => {
+                    const seleccionado =
+                        turnoSeleccionado === turno.codigoTurno;
 
-              <strong>Horarios pendientes de consulta</strong>
+                    return (
+                        <button
+                        type="button"
+                        key={turno.codigoTurno}
+                        className={`sharing-turno-card ${
+                            seleccionado
+                            ? "sharing-turno-card-seleccionado"
+                            : ""
+                        }`}
+                        onClick={() =>
+                            setTurnoSeleccionado(turno.codigoTurno)
+                        }
+                        aria-pressed={seleccionado}
+                        >
+                        <div className="sharing-turno-icono">
+                            <BookOpen size={22} aria-hidden="true" />
+                        </div>
 
-              <span>
-                Los cursos, horarios y cupos se cargarán desde el backend.
-              </span>
-            </div>
-          </section>
+                        <div className="sharing-turno-info">
+                            <h3>{turno.curso}</h3>
+
+                            <div className="sharing-turno-horario">
+                            <Clock3 size={16} aria-hidden="true" />
+
+                            <span>
+                                {turno.horaInicio} - {turno.horaFin}
+                            </span>
+                            </div>
+
+                            <span className="sharing-turno-accion">
+                            {seleccionado
+                                ? "Horario seleccionado"
+                                : "Seleccionar este horario"}
+                            </span>
+                        </div>
+
+                        <span
+                            className={`sharing-turno-radio ${
+                            seleccionado
+                                ? "sharing-turno-radio-activo"
+                                : ""
+                            }`}
+                            aria-hidden="true"
+                        >
+                            {seleccionado && <span />}
+                        </span>
+                        </button>
+                    );
+                    })}
+                </div>
+
+                {turnoSeleccionado !== null &&
+                    turnos.some(
+                    (turno) => turno.codigoTurno === turnoSeleccionado,
+                    ) && (
+                    <div className="sharing-turno-confirmacion" role="status">
+                        <span className="sharing-turno-confirmacion-icono">
+                        ✓
+                        </span>
+
+                        <div>
+                        <strong>Horario seleccionado</strong>
+                        <p>
+                            {turnos.find(
+                            (turno) =>
+                                turno.codigoTurno === turnoSeleccionado,
+                            )?.curso}
+                            {" · "}
+                            {turnos.find(
+                            (turno) =>
+                                turno.codigoTurno === turnoSeleccionado,
+                            )?.horaInicio}
+                            {" - "}
+                            {turnos.find(
+                            (turno) =>
+                                turno.codigoTurno === turnoSeleccionado,
+                            )?.horaFin}
+                        </p>
+                        </div>
+                    </div>
+                    )}
+                </>
+            )}
+            </section>
+
+        <div className="sharing-registro">
+            <button
+                type="button"
+                className="sharing-btn-registrar"
+                onClick={registrarTurno}
+                disabled={
+                registrando ||
+                registroExitoso ||
+                codigoPariente === null ||
+                turnoSeleccionado === null
+                }
+            >
+                {registrando ? "Registrando..." : "Registrar participación"}
+            </button>
+
+            {mensajeRegistro && (
+                <div
+                className={
+                    registroExitoso
+                    ? "sharing-mensaje sharing-mensaje-exito"
+                    : "sharing-mensaje sharing-mensaje-error"
+                }
+                role="status"
+                >
+                {mensajeRegistro}
+                </div>
+            )}
+
+            <p className="sharing-registro-ayuda">
+                Selecciona un único curso y horario antes de registrar tu participación.
+            </p>
+        </div>
 
           <p className="sharing-nota">
             Los campos marcados con * son obligatorios.

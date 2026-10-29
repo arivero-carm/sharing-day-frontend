@@ -40,7 +40,12 @@ export async function obtenerTurnos(
   _codigoGrado: number,
   _codigoSeccion: number,
 ): Promise<Turno[]> {
-  const response = await api<Turno[]>(`/Sharingday/Horario/${_codigoGrado}/${_codigoSeccion}`);
+  const response = await api<Turno[]>(
+    `/Sharingday/Horario/${_codigoGrado}/${_codigoSeccion}`,
+  );
+
+  console.log("Respuesta completa de horarios:", response);
+  console.log("¿Es un arreglo?", Array.isArray(response));
 
   return response;
 }
@@ -65,6 +70,6 @@ export async function registrarParticipacion(
 ): Promise<void> {
   await api<void>('/Sharingday/Inscripcion', {
     method: 'POST',
-    body: JSON.stringify(_datos),
+    body: JSON.stringify({..._datos, codigoPariente: String(_datos.codigoPariente)}),
   });
 }

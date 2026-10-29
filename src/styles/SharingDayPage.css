@@ -500,3 +500,280 @@
     transition: none;
   }
 }
+
+/* Contenedor de tarjetas */
+.sharing-lista-turnos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+/* Tarjeta seleccionable */
+.sharing-turno-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-width: 0;
+  padding: 20px;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  background: #fff;
+  border: 1.5px solid #e4d8cc;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sharing-turno-card:hover {
+  border-color: #b64a25;
+  box-shadow: 0 5px 16px rgba(87, 38, 19, 0.08);
+  transform: translateY(-2px);
+}
+
+.sharing-turno-card-seleccionado {
+  background: #fff8ed;
+  border-color: #b64a25;
+  box-shadow: 0 0 0 2px rgba(182, 74, 37, 0.1);
+}
+
+/* Icono del curso */
+.sharing-turno-icono {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  color: #572613;
+  background: #fff1dc;
+  border-radius: 12px;
+}
+
+.sharing-turno-card-seleccionado .sharing-turno-icono {
+  color: #fff;
+  background: #572613;
+}
+
+/* Nombre y horario */
+.sharing-turno-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sharing-turno-info h3 {
+  margin: 0 0 10px;
+  color: #572613;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.sharing-turno-horario {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #805447;
+  font-size: 13px;
+}
+
+.sharing-turno-horario svg {
+  flex-shrink: 0;
+  color: #b64a25;
+}
+
+.sharing-turno-accion {
+  display: block;
+  margin-top: 10px;
+  color: #9a796a;
+  font-size: 12px;
+}
+
+.sharing-turno-card-seleccionado .sharing-turno-accion {
+  color: #b64a25;
+  font-weight: 600;
+}
+
+/* Círculo de selección */
+.sharing-turno-radio {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 21px;
+  height: 21px;
+  border: 2px solid #d8c9ba;
+  border-radius: 50%;
+}
+
+.sharing-turno-radio-activo {
+  border-color: #b64a25;
+}
+
+.sharing-turno-radio-activo span {
+  width: 11px;
+  height: 11px;
+  background: #b64a25;
+  border-radius: 50%;
+}
+
+/* Confirmación visual de la selección */
+.sharing-turno-confirmacion {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 16px;
+  background: #edf8f0;
+  border: 1px solid #c7e8d0;
+  border-radius: 12px;
+}
+
+.sharing-turno-confirmacion-icono {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 27px;
+  height: 27px;
+  color: #fff;
+  background: #23834d;
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.sharing-turno-confirmacion strong {
+  color: #17683b;
+  font-size: 14px;
+}
+
+.sharing-turno-confirmacion p {
+  margin: 5px 0 0;
+  color: #286443;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Accesibilidad */
+.sharing-turno-card:focus-visible {
+  outline: 3px solid rgba(182, 74, 37, 0.35);
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .sharing-lista-turnos {
+    grid-template-columns: 1fr;
+  }
+
+  .sharing-turno-card {
+    padding: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sharing-turno-card {
+    transition: none;
+  }
+}
+
+.sharing-registro {
+  margin-top: 24px;
+}
+
+.sharing-btn-registrar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  padding: 14px 20px;
+  color: #fff;
+  background: #572613;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.sharing-btn-registrar:hover:not(:disabled) {
+  background: #78391f;
+  transform: translateY(-1px);
+}
+
+.sharing-btn-registrar:disabled {
+  background: #c8b9ae;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.sharing-registro-ayuda {
+  margin-top: 10px;
+  color: #805447;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.sharing-mensaje-exito {
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  color: #17683b;
+  background: #edf8f0;
+  border: 1px solid #c7e8d0;
+  border-radius: 10px;
+}
+
+.sharing-mensaje-error {
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  color: #9b3025;
+  background: #fff1ef;
+  border: 1px solid #f0c7c1;
+  border-radius: 10px;
+}
+
+/* Separación del bloque de registro */
+.sharing-registro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 8px;
+}
+
+/* Botón de registro */
+.sharing-btn-registrar {
+  width: 100%;
+  min-height: 52px;
+  margin: 0;
+}
+
+/* Mensaje de resultado */
+.sharing-registro .sharing-mensaje {
+  margin: 0;
+  padding: 15px 16px;
+  line-height: 1.6;
+  border-radius: 12px;
+}
+
+/* Texto de ayuda */
+.sharing-registro-ayuda {
+  margin: 0;
+  padding: 0 8px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* Adaptación para móviles */
+@media (max-width: 600px) {
+  .sharing-registro {
+    gap: 14px;
+    margin-top: 26px;
+  }
+}

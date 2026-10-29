@@ -30,13 +30,21 @@ export interface PadreFamilia {
 /** Turnos disponibles para un grado y una sección. */
 export interface Turno {
   codigoTurno: number;
-  Curso: string;
-  "Hora Inicio": string;
-  "Hora Fin": string;
+  curso: string;
+  horaInicio: string;
+  horaFin: string;
 }
 
 /** Datos enviados para registrar la participación. */
 export interface RegistrarParticipacionRequest {
   codigoPariente: number;
   CodigoTurno: number;
+}
+
+export interface PadreFamilia {
+  nombreCompleto: string;
+  numeroDocumento: string;
+  codigoPariente: number;
+  codigoAlumno?: number;
+  nombreAlumno?: string;
 }
