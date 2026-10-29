@@ -1,29 +1,71 @@
-
 :root {
   font-family: "DM Sans", sans-serif;
-  color: #292c30;
-  background: #faf8f4;
+  color: #572613;
+  background: #f7f6f2;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Colores principales */
+  --color-fondo: #f7f6f2;
+  --color-superficie: #ffffff;
+
+  /* Identidad visual: Día del Logro */
+  --color-primario: #572613;
+  --color-primario-hover: #401b0f;
+
+  --color-naranja: #f04b23;
+  --color-dorado: #ffa900;
+  --color-dorado-claro: #fff5e5;
+
+  /* Textos */
+  --color-texto: #572613;
+  --color-texto-secundario: #805447;
+  --color-texto-claro: #ffffff;
+
+  /* Bordes */
+  --color-borde: #e4d8cc;
+
+  /* Estados */
+  --color-error: #923d32;
+  --color-error-fondo: #fff3f1;
+
+  --color-exito: #24764a;
+  --color-exito-fondo: #edf8f0;
+
+  /* Dimensiones */
+  --radio-borde: 9px;
+  --radio-tarjeta: 18px;
+
+  /* Sombras */
+  --sombra-tarjeta: 0 10px 35px rgba(87, 38, 19, 0.08);
 }
 
-* {
+/* Restablecimiento general */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
+/* Documento */
 html {
   min-width: 320px;
   min-height: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
 }
 
+/* Controles de formulario */
 button,
 input,
 select,
@@ -31,6 +73,26 @@ textarea {
   font: inherit;
 }
 
+button,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+/* Imágenes e iconos */
 img,
 svg {
   display: block;
@@ -40,7 +102,25 @@ img {
   max-width: 100%;
 }
 
-button,
-select {
-  -webkit-tap-highlight-color: transparent;
+/* Aplicación React */
+#root {
+  min-height: 100vh;
+}
+
+/* Accesibilidad: foco visible */
+:focus-visible {
+  outline: 2px solid var(--color-dorado);
+  outline-offset: 3px;
+}
+
+/* Preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

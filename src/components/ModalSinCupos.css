@@ -1,0 +1,138 @@
+.modal-sin-cupos-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(33, 46, 58, 0.58);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: modalSinCuposAparecer 0.2s ease-out;
+}
+
+.modal-sin-cupos-container {
+  width: 100%;
+  max-width: 430px;
+  padding: 36px 30px 30px;
+  background: #ffffff;
+  border: 1px solid #e9e3dc;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(33, 46, 58, 0.18);
+  text-align: center;
+  animation: modalSinCuposEscalar 0.25s ease-out;
+}
+
+.modal-sin-cupos-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 66px;
+  height: 66px;
+  margin: 0 auto 22px;
+  color: #8b6238;
+  background: #f7f3ee;
+  border: 1px solid #e9d9c7;
+  border-radius: 50%;
+}
+
+.modal-sin-cupos-icono svg {
+  width: 34px;
+  height: 34px;
+}
+
+.modal-sin-cupos-titulo {
+  margin: 0 0 14px;
+  color: #212e3a;
+  font-family: "Manrope", sans-serif;
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.modal-sin-cupos-mensaje {
+  margin: 0 0 26px;
+  color: #75726d;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.modal-sin-cupos-boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 20px;
+  color: #ffffff;
+  background: #212e3a;
+  border: none;
+  border-radius: 9px;
+  font-size: 15px;
+  font-weight: 700;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.modal-sin-cupos-boton:hover {
+  background: #354958;
+}
+
+.modal-sin-cupos-boton:active {
+  transform: scale(0.99);
+}
+
+.modal-sin-cupos-boton:focus-visible {
+  outline: 3px solid #baa58f;
+  outline-offset: 3px;
+}
+
+@keyframes modalSinCuposAparecer {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSinCuposEscalar {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-sin-cupos-container {
+    padding: 30px 22px 24px;
+    border-radius: 15px;
+  }
+
+  .modal-sin-cupos-titulo {
+    font-size: 21px;
+  }
+
+  .modal-sin-cupos-mensaje {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-sin-cupos-overlay,
+  .modal-sin-cupos-container {
+    animation: none;
+  }
+
+  .modal-sin-cupos-boton {
+    transition: none;
+  }
+}

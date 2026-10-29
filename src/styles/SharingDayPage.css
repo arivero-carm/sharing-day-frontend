@@ -1,0 +1,502 @@
+/* =========================================
+   PÁGINA PRINCIPAL
+========================================= */
+
+.sharing-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  background-color: #f7f6f2;
+  color: #572613;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+/* =========================================
+   TARJETA PRINCIPAL
+========================================= */
+
+.sharing-card {
+  width: 100%;
+  max-width: 620px;
+  padding: 34px 40px;
+  background-color: #ffffff;
+  border: 1px solid #e4d8cc;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(87, 38, 19, 0.08);
+  box-sizing: border-box;
+}
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+.sharing-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 10px;
+  margin-bottom: 24px;
+}
+
+/* Logo */
+
+.sharing-logo {
+  display: block;
+  width: min(100%, 210px);
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto 12px;
+}
+
+/* Etiqueta superior */
+
+.sharing-etiqueta {
+  margin-top: 4px;
+  margin-bottom: 8px;
+  color: #b64a25;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 2px;
+}
+
+/* Título principal */
+
+.sharing-header h1 {
+  margin: 10px 0 12px;
+  color: #572613;
+  font-size: 29px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.7px;
+}
+
+/* Descripción */
+
+.sharing-header p {
+  max-width: 440px;
+  margin: 0;
+  color: #805447;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* =========================================
+   SEPARADOR
+========================================= */
+
+.sharing-separador {
+  width: 64px;
+  height: 4px;
+  margin: 22px auto;
+  background-color: #ffa900;
+  border-radius: 10px;
+}
+
+/* =========================================
+   FORMULARIO
+========================================= */
+
+.sharing-form {
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+}
+
+.sharing-form h2 {
+  margin: 0;
+  color: #572613;
+  font-size: 17px;
+  font-weight: 750;
+}
+
+/* =========================================
+   CAMPOS
+========================================= */
+
+.sharing-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+
+.sharing-campo label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #572613;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.sharing-campo label svg {
+  flex-shrink: 0;
+  color: #a87543;
+}
+
+.sharing-campo input,
+.sharing-campo select {
+  width: 100%;
+  min-height: 49px;
+  padding: 12px 14px;
+  color: #572613;
+  background-color: #ffffff;
+  border: 1px solid #e4d8cc;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.sharing-campo input::placeholder {
+  color: #a08b7e;
+}
+
+.sharing-campo input:focus,
+.sharing-campo select:focus {
+  outline: none;
+  border-color: #ffa900;
+  box-shadow: 0 0 0 3px rgba(255, 169, 0, 0.17);
+}
+
+.sharing-campo input[readonly] {
+  color: #805447;
+  background-color: #faf6f0;
+}
+
+.sharing-campo select {
+  cursor: pointer;
+}
+
+.sharing-campo small {
+  color: #805447;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* =========================================
+   GRADO Y SECCIÓN
+========================================= */
+
+.sharing-campos-grado {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* =========================================
+   DOCUMENTO Y BÚSQUEDA
+========================================= */
+
+.sharing-documento {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.sharing-documento input {
+  flex: 1;
+  min-width: 0;
+}
+
+.sharing-boton-buscar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 49px;
+  padding: 12px 18px;
+  color: #ffffff;
+  background-color: #572613;
+  border: 1px solid #572613;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.sharing-boton-buscar:hover:not(:disabled) {
+  background-color: #401b0f;
+  border-color: #401b0f;
+}
+
+.sharing-boton-buscar:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.sharing-boton-buscar:focus-visible {
+  outline: 3px solid rgba(255, 169, 0, 0.5);
+  outline-offset: 3px;
+}
+
+.sharing-boton-buscar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   MENSAJES
+========================================= */
+
+.sharing-mensaje {
+  padding: 13px 14px;
+  color: #572613;
+  background-color: #fff5e5;
+  border: 1px solid #e9d7bc;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.sharing-mensaje-error {
+  color: #923d32;
+  background-color: #fff3f1;
+  border-color: #f0d2cd;
+}
+
+.sharing-mensaje-info {
+  color: #572613;
+  background-color: #fff5e5;
+  border-color: #e9d7bc;
+}
+
+.sharing-mensaje-exito {
+  color: #24764a;
+  background-color: #edf8f0;
+  border-color: #cde8d4;
+}
+
+/* =========================================
+   CURSOS Y HORARIOS
+========================================= */
+
+.sharing-turnos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 21px;
+  border-top: 1px solid #eee3d8;
+}
+
+.sharing-turnos-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sharing-turnos-titulo svg {
+  flex-shrink: 0;
+  color: #b87535;
+}
+
+.sharing-turnos-titulo h2 {
+  margin: 0;
+  color: #572613;
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.sharing-turnos > p {
+  margin: 0;
+  color: #805447;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* Estado sin horarios */
+
+.sharing-vacio {
+  padding: 20px 16px;
+  color: #805447;
+  background-color: #fcfaf7;
+  border: 1px dashed #dfc9b5;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.sharing-vacio > svg {
+  margin: 0 auto;
+  color: #b87535;
+}
+
+.sharing-vacio strong,
+.sharing-vacio span {
+  display: block;
+}
+
+.sharing-vacio strong {
+  margin-top: 10px;
+  color: #572613;
+}
+
+.sharing-vacio span {
+  margin-top: 6px;
+  color: #805447;
+}
+
+/* =========================================
+   NOTA INFORMATIVA
+========================================= */
+
+.sharing-nota {
+  margin: -5px 0 0;
+  color: #805447;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* =========================================
+   TABLETS
+========================================= */
+
+@media (max-width: 768px) {
+  .sharing-page {
+    padding: 28px 16px;
+  }
+
+  .sharing-card {
+    max-width: 560px;
+    padding: 30px;
+  }
+
+  .sharing-logo {
+    width: min(100%, 200px);
+  }
+
+  .sharing-header h1 {
+    font-size: 27px;
+  }
+}
+
+/* =========================================
+   MÓVILES
+========================================= */
+
+@media (max-width: 480px) {
+  .sharing-page {
+    padding: 16px 12px;
+  }
+
+  .sharing-card {
+    padding: 25px 19px;
+    border-radius: 14px;
+  }
+
+  .sharing-header {
+    margin-bottom: 20px;
+  }
+
+  .sharing-logo {
+    width: min(100%, 185px);
+    margin-bottom: 10px;
+  }
+
+  .sharing-etiqueta {
+    font-size: 10px;
+    letter-spacing: 1.7px;
+  }
+
+  .sharing-header h1 {
+    font-size: 24px;
+  }
+
+  .sharing-header p {
+    font-size: 13px;
+  }
+
+  .sharing-separador {
+    margin: 19px auto;
+  }
+
+  .sharing-form {
+    gap: 21px;
+  }
+
+  .sharing-form h2,
+  .sharing-turnos-titulo h2 {
+    font-size: 16px;
+  }
+
+  .sharing-campos-grado {
+    gap: 12px;
+  }
+
+  .sharing-campo label {
+    font-size: 13px;
+  }
+
+  .sharing-campo input,
+  .sharing-campo select {
+    min-height: 47px;
+    padding: 11px;
+    font-size: 13px;
+  }
+
+  .sharing-documento {
+    gap: 7px;
+  }
+
+  .sharing-boton-buscar {
+    min-height: 47px;
+    padding: 10px 12px;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .sharing-boton-buscar svg {
+    width: 17px;
+    height: 17px;
+  }
+}
+
+/* =========================================
+   MÓVILES PEQUEÑOS
+========================================= */
+
+@media (max-width: 360px) {
+  .sharing-card {
+    padding: 22px 15px;
+  }
+
+  .sharing-campos-grado {
+    grid-template-columns: 1fr;
+  }
+
+  .sharing-documento {
+    flex-direction: column;
+  }
+
+  .sharing-boton-buscar {
+    width: 100%;
+  }
+}
+
+/* =========================================
+   ACCESIBILIDAD
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .sharing-campo input,
+  .sharing-campo select,
+  .sharing-boton-buscar {
+    transition: none;
+  }
+}

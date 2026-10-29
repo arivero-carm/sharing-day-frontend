@@ -1,7 +1,7 @@
-import VisitaPapaPage from "./pages/VisitaPapa/VisitaPapaPage";
+import SharingDayPage from "./pages/SharingDay/SharingDayPage";
 
 function App() {
-  return <VisitaPapaPage />;
+  return <SharingDayPage />;
 }
 
 export default App;
