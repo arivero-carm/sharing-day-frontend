@@ -192,6 +192,9 @@ export default function SharingDayPage() {
         setRegistroExitoso(true);
         setMensajeRegistro("¡Tu participación se registró correctamente!");
 
+        // Abrir el modal de confirmación
+        setMostrarModalSinCupos(true);
+
         // Limpiar el formulario después de registrar
         setDocumento("");
         setSeccion(0);
@@ -472,16 +475,12 @@ export default function SharingDayPage() {
                 {registrando ? "Registrando..." : "Registrar participación"}
             </button>
 
-            {mensajeRegistro && (
+            {mensajeRegistro && !registroExitoso && (
                 <div
-                className={
-                    registroExitoso
-                    ? "sharing-mensaje sharing-mensaje-exito"
-                    : "sharing-mensaje sharing-mensaje-error"
-                }
-                role="status"
+                    className="sharing-mensaje sharing-mensaje-error"
+                    role="alert"
                 >
-                {mensajeRegistro}
+                    {mensajeRegistro}
                 </div>
             )}
 

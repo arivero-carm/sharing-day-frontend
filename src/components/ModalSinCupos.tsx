@@ -11,11 +11,10 @@ interface ModalSinCuposProps {
 export const ModalSinCupos: React.FC<ModalSinCuposProps> = ({
   isOpen,
   onClose,
-  title = "¡Cupos completos!",
+  title = "¡Inscripción exitosa!",
   message = (
     <>
-      Los cupos del curso seleccionado se han agotado. Por favor, selecciona
-      otro curso disponible para continuar con tu inscripción.
+      Tu participación en el Día del Logro se ha registrado correctamente.
     </>
   ),
 }) => {
@@ -41,7 +40,7 @@ export const ModalSinCupos: React.FC<ModalSinCuposProps> = ({
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="1.8"
-              d="M12 9v4m0 4h.01M10.3 3.9L2.6 17.3A2 2 0 004.3 20h15.4a2 2 0 001.7-2.7L13.7 3.9a2 2 0 00-3.4 0z"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
         </div>
