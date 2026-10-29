@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   CalendarDays,
@@ -9,6 +8,7 @@ import {
 } from "lucide-react";
 
 import "../../styles/SharingDayPage.css";
+import { ModalSinCupos } from "../../components/ModalSinCupos";
 import logo from "../../assets/dia-del-logro-logo.png";
 
 import {
@@ -40,6 +40,8 @@ export default function SharingDayPage() {
   const [tipoMensaje, setTipoMensaje] = useState<
     "error" | "info" | "exito"
   >("info");
+
+  const [mostrarModalSinCupos, setMostrarModalSinCupos] = useState(false);
 
   // Estados para los cursos y horarios
   const [turnos, setTurnos] = useState<Turno[]>([]);
@@ -467,6 +469,10 @@ export default function SharingDayPage() {
             Los campos marcados con * son obligatorios.
           </p>
         </form>
+        <ModalSinCupos
+        isOpen={mostrarModalSinCupos}
+        onClose={() => setMostrarModalSinCupos(false)}
+        />
       </section>
     </main>
   );

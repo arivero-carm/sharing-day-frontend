@@ -14,9 +14,8 @@ export const ModalSinCupos: React.FC<ModalSinCuposProps> = ({
   title = "¡Cupos completos!",
   message = (
     <>
-      Los cupos de los cursos correspondientes a la sección del estudiante
-      se han agotado. Por el momento, no es posible registrar una nueva
-      participación.
+      Los cupos del curso seleccionado se han agotado. Por favor, selecciona
+      otro curso disponible para continuar con tu inscripción.
     </>
   ),
 }) => {
