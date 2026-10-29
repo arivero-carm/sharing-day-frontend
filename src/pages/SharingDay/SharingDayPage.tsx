@@ -52,6 +52,7 @@ export default function SharingDayPage() {
     "error" | "info" | "exito"
   >("info");
   
+  const [tipoDocumento, setTipoDocumento] = useState<number>(2);
 
   const [mostrarModalSinCupos, setMostrarModalSinCupos] = useState(false);
 
@@ -110,7 +111,7 @@ export default function SharingDayPage() {
         };
     }, [mostrarHorarios, seccion]);
 
-  // Buscar al padre o apoderado
+    // Buscar al padre o apoderado
     async function buscarPadre() {
         setMensaje("");
         setCodigoPariente(null);
@@ -126,9 +127,17 @@ export default function SharingDayPage() {
             return;
         }
 
-        if (!/^\d{8,9}$/.test(documento.trim())) {
+        const documentoLimpio = documento.trim();
+
+        if (tipoDocumento === 2 && !/^\d{8}$/.test(documentoLimpio)) {
             setTipoMensaje("error");
-            setMensaje("Ingresa un documento válido de 8 o 9 dígitos.");
+            setMensaje("El DNI debe tener exactamente 8 dígitos.");
+            return;
+        }
+
+        if (tipoDocumento === 6 && !/^\d{8,9}$/.test(documentoLimpio)) {
+            setTipoMensaje("error");
+            setMensaje("El C.E. debe tener entre 8 y 9 dígitos.");
             return;
         }
 
@@ -136,16 +145,16 @@ export default function SharingDayPage() {
 
         try {
             const response = await buscarPadreFamilia({
-            codigoGrado: 6,
-            codigoSeccion: seccion,
-            codigoTipoDocumento: 2,
-            numeroDocumento: documento.trim(),
+                codigoGrado: 6,
+                codigoSeccion: seccion,
+                codigoTipoDocumento: tipoDocumento,
+                numeroDocumento: documento.trim(),
             });
 
             if (!response || !response.codigoPariente) {
-            setTipoMensaje("error");
-            setMensaje("No se encontraron los datos del padre de familia.");
-            return;
+                setTipoMensaje("error");
+                setMensaje("No se encontraron los datos del padre de familia.");
+                return;
             }
 
             setCodigoPariente(Number(response.codigoPariente));
@@ -157,14 +166,14 @@ export default function SharingDayPage() {
         } catch (error: unknown) {
             setTipoMensaje("error");
             setMensaje(
-            error instanceof Error
-                ? error.message
-                : "No se pudieron consultar los datos del padre de familia.",
+                error instanceof Error
+                    ? error.message
+                    : "No se pudieron consultar los datos del padre de familia.",
             );
         } finally {
             setBuscando(false);
         }
-        }
+    }
 
     async function registrarTurno() {
     setMensajeRegistro("");
@@ -182,15 +191,15 @@ export default function SharingDayPage() {
 
     setRegistrando(true);
 
-    try {
+      try {
         await registrarParticipacion({
-        codigoPariente,
-        CodigoTurno: turnoSeleccionado,
+            codigoPariente,
+            CodigoTurno: turnoSeleccionado,
         });
 
         // Mostrar confirmación de registro exitoso
         setRegistroExitoso(true);
-        setMensajeRegistro("¡Tu participación se registró correctamente!");
+        setMensajeRegistro("");
 
         // Abrir el modal de confirmación
         setMostrarModalSinCupos(true);
@@ -204,18 +213,18 @@ export default function SharingDayPage() {
         setMostrarHorarios(false);
         setMensaje("");
         setErrorTurnos("");
-        setMostrarModalSinCupos(false);
 
     } catch (error: unknown) {
+        setRegistroExitoso(false);
         setMensajeRegistro(
-        error instanceof Error
-            ? error.message
-            : "No se pudo registrar la participación."
+            error instanceof Error
+                ? error.message
+                : "No se pudo registrar la participación."
         );
     } finally {
         setRegistrando(false);
     }
-    }
+  }
 
   return (
     <main className="sharing-page">
@@ -284,9 +293,31 @@ export default function SharingDayPage() {
           </div>
 
           <div className="sharing-campo">
-            <label htmlFor="documento">
+            <label htmlFor="tipoDocumento">
               <UserRound size={17} aria-hidden="true" />
-              Documento del padre de familia *
+              Tipo de documento *
+            </label>
+
+            <select
+              id="tipoDocumento"
+              value={tipoDocumento}
+              onChange={(event) => {
+                setTipoDocumento(Number(event.target.value));
+                setDocumento("");
+                setMensaje("");
+              }}
+              disabled={buscando}
+              required
+            >
+              {TIPOS_DOCUMENTOS.map((tipo) => (
+                <option key={tipo.id} value={tipo.id}>
+                  {tipo.descripcion}
+                </option>
+              ))}
+            </select>
+
+            <label htmlFor="documento">
+              Número de documento *
             </label>
 
             <div className="sharing-documento">
@@ -295,7 +326,11 @@ export default function SharingDayPage() {
                 type="text"
                 inputMode="numeric"
                 autoComplete="off"
-                placeholder="Ingresa tu DNI o CE"
+                placeholder={
+                  tipoDocumento === 2
+                    ? "Ingresa tu DNI"
+                    : "Ingresa tu C.E."
+                }
                 value={documento}
                 maxLength={9}
                 onChange={(event) => {

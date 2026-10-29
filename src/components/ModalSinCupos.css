@@ -66,18 +66,19 @@
   min-height: 46px;
   padding: 12px 20px;
   color: #ffffff;
-  background: #212e3a;
+  background: #572613;
   border: none;
   border-radius: 9px;
   font-size: 15px;
   font-weight: 700;
+  cursor: pointer;
   transition:
     background-color 0.2s ease,
     transform 0.2s ease;
 }
 
 .modal-sin-cupos-boton:hover {
-  background: #354958;
+  background: #74371e;
 }
 
 .modal-sin-cupos-boton:active {
