@@ -1,11 +1,9 @@
-# Visita del Papa León XIV al Perú
+Sharing Day Frontend
 
-Aplicación web desarrollada para registrar a las personas que participarán en las actividades programadas durante la visita de Su Santidad el Papa León XIV al Perú.
+Aplicación web para la gestión de inscripciones al Sharing Day, orientada a facilitar el registro de participación de los padres de familia y la consulta de horarios disponibles según el grado y la sección del estudiante.
 
-## Tecnologías utilizadas
+Descripción
 
-- **React** — Construcción de la interfaz de usuario.
-- **TypeScript** — Tipado estático para mejorar la mantenibilidad del código.
-- **Vite** — Herramienta de desarrollo y compilación.
-- **CSS** — Estilos y diseño adaptable.
-- **Fetch API** — Comunicación con los servicios del backend.
+El sistema permite identificar al padre de familia mediante su número de documento, seleccionar el grado y la sección correspondientes, consultar los turnos disponibles y registrar su participación en el evento.
+
+La interfaz está diseñada para ofrecer una experiencia de usuario sencilla, intuitiva y adaptable a distintos dispositivos.
