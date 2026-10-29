@@ -1,0 +1,155 @@
+/* =========================================
+   OVERLAY OSCURO CON EFECTO BORROSO
+========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* =========================================
+   CONTENEDOR DEL MODAL
+========================================= */
+.modal-container {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 32px 28px 24px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* =========================================
+   ICONO DEL MODAL DE REGISTRO EXITOSO
+   COLOR VERDE
+========================================= */
+.modal-icon-wrapper.success {
+  width: 64px;
+  height: 64px;
+  background-color: #4cd964;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(76, 217, 100, 0.3);
+}
+
+/* Icono de check */
+.modal-icon-wrapper.success .modal-icon-check {
+  width: 32px;
+  height: 32px;
+  color: #ffffff;
+}
+
+/* =========================================
+   ICONO DEL MODAL DE INSCRIPCIONES CERRADAS
+   COLOR ROJO
+========================================= */
+.modal-icon-wrapper.closed {
+  width: 64px;
+  height: 64px;
+  background-color: #dc2626;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* Icono de X */
+.modal-icon-wrapper.closed .modal-icon-check {
+  width: 32px;
+  height: 32px;
+  color: #ffffff;
+}
+
+/* =========================================
+   TÍTULO
+========================================= */
+.modal-title {
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #5c3217;
+  margin: 0 0 12px 0;
+}
+
+/* =========================================
+   MENSAJE DESCRIPTIVO
+========================================= */
+.modal-message {
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #4a4a4a;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+/* =========================================
+   BOTÓN DE ACCIÓN
+========================================= */
+.modal-button {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #ba5728;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.modal-button:hover {
+  background-color: #9e461e;
+}
+
+.modal-button:active {
+  transform: scale(0.98);
+}
+
+/* =========================================
+   ANIMACIONES
+========================================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
