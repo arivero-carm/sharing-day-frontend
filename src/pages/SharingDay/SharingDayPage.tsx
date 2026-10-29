@@ -26,6 +26,17 @@ const SECCIONES = [
   { descripcion: "D", id: 4 },
 ];
 
+const TIPOS_DOCUMENTOS = [
+  {
+    id: 2,
+    descripcion: 'DNI'
+  },
+  {
+    id: 6,
+    descripcion: 'C.E.'
+  }
+]
+
 export default function SharingDayPage() {
   const params = new URLSearchParams(window.location.search);
 
