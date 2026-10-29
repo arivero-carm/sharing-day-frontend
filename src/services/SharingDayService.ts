@@ -4,6 +4,7 @@ import type {
   RegistrarParticipacionRequest,
   Turno,
 } from "../types/sharing-day.types";
+import { api } from "./api";
 
 /**
  * Busca al padre de familia por su documento.
@@ -16,9 +17,12 @@ import type {
 export async function buscarPadreFamilia(
   _datos: BuscarPadreRequest,
 ): Promise<PadreFamilia | null> {
-  throw new Error(
-    "La búsqueda del padre de familia está pendiente de integración con el backend.",
-  );
+  const response = await api<PadreFamilia>('/Sharingday/Persona', {
+    method: 'POST',
+    body: JSON.stringify(_datos),
+  });
+
+  return response;
 }
 
 /**
@@ -36,9 +40,9 @@ export async function obtenerTurnos(
   _codigoGrado: number,
   _codigoSeccion: number,
 ): Promise<Turno[]> {
-  throw new Error(
-    "La consulta de turnos está pendiente de integración con el backend.",
-  );
+  const response = await api<Turno[]>(`/Sharingday/Horario/${_codigoGrado}/${_codigoSeccion}`);
+
+  return response;
 }
 
 /**

@@ -2,11 +2,29 @@ import { useState } from "react";
 import { CalendarDays, Clock3, Search, UserRound } from "lucide-react";
 import "../../styles/SharingDayPage.css";
 import logo from "../../assets/dia-del-logro-logo.png";
+import { buscarPadreFamilia, obtenerTurnos } from "../../services/SharingDayService";
 
-const SECCIONES = ["A", "B", "C", "D"];
+const SECCIONES = [
+  {
+    descripcion: "A",
+    id: 1
+},
+{
+    descripcion: "B",
+    id: 2
+},
+{
+    descripcion: "C",
+    id: 3
+},
+{
+    descripcion: "D",
+    id: 4
+},
+];
 
 export default function SharingDayPage() {
-  const [seccion, setSeccion] = useState("");
+  const [seccion, setSeccion] = useState<number>(1);
   const [documento, setDocumento] = useState("");
   const [buscando, setBuscando] = useState(false);
   const [mensaje, setMensaje] = useState("");
@@ -14,7 +32,7 @@ export default function SharingDayPage() {
     "info",
   );
 
-  function buscarPadre() {
+  async function buscarPadre() {
     setMensaje("");
 
     if (!seccion) {
@@ -30,11 +48,29 @@ export default function SharingDayPage() {
     }
 
     setBuscando(true);
-    setTipoMensaje("info");
-    setMensaje(
-      "Los datos del padre de familia se consultarán cuando se integre el backend.",
-    );
-    setBuscando(false);
+  
+    try {
+      
+      const response = await buscarPadreFamilia({
+        codigoGrado: 6,
+        codigoSeccion: SECCIONES.find(s => s.id === seccion)?.id || 0,
+        codigoTipoDocumento: 2,
+        numeroDocumento: documento,
+      })
+      
+      setTipoMensaje("exito");
+      setMensaje(
+        response?.nombreCompleto ?? ''
+      );
+
+    } catch (error: any) {
+      setTipoMensaje("error");
+      setMensaje(
+        error.message ?? "Los datos del padre de familia se consultarán cuando se integre el backend.",
+      );
+    } finally {
+      setBuscando(false);
+    }
   }
 
   return (
@@ -78,17 +114,25 @@ export default function SharingDayPage() {
               <label htmlFor="seccion">Sección *</label>
               <select
                 id="seccion"
-                value={seccion}
-                onChange={(event) => {
-                  setSeccion(event.target.value);
+                value={seccion!}
+                onChange={async (event) => {
+                  setSeccion(Number(event.target.value));
                   setMensaje("");
+
+                  try {
+                    const turnos = await obtenerTurnos(6, Number(event.target.value));
+
+                    console.log(`[TURNOS:]`, turnos)
+                  } catch (error) {
+                    console.log(error)
+                  }
                 }}
                 required
               >
                 <option value="">Selecciona tu sección</option>
                 {SECCIONES.map((opcion) => (
-                  <option key={opcion} value={opcion}>
-                    Sección {opcion}
+                  <option key={opcion.id} value={opcion.id}>
+                    Sección {opcion.descripcion}
                   </option>
                 ))}
               </select>
