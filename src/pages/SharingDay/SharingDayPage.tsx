@@ -9,6 +9,7 @@ import {
 
 import "../../styles/SharingDayPage.css";
 import { ModalSinCupos } from "../../components/ModalSinCupos";
+import { ModalFormularioCerrado } from "../../components/ModalFormularioCerrado";
 import logo from "../../assets/dia-del-logro-logo.png";
 
 import {
@@ -37,6 +38,11 @@ const TIPOS_DOCUMENTOS = [
   }
 ]
 
+// Fecha de cierre: sábado 07/11/2026 a las 00:00, hora de Perú.
+const FECHA_CIERRE = new Date(
+  "2026-11-06T23:59:00-05:00"
+).getTime();
+
 export default function SharingDayPage() {
   const params = new URLSearchParams(window.location.search);
 
@@ -56,6 +62,10 @@ export default function SharingDayPage() {
 
   const [mostrarModalSinCupos, setMostrarModalSinCupos] = useState(false);
 
+  const [formularioCerrado, setFormularioCerrado] = useState(
+    () => Date.now() >= FECHA_CIERRE
+  );
+
   // Estados para los cursos y horarios
   const [turnos, setTurnos] = useState<Turno[]>([]);
   const [cargandoTurnos, setCargandoTurnos] = useState(false);
@@ -66,6 +76,19 @@ export default function SharingDayPage() {
   const [mensajeRegistro, setMensajeRegistro] = useState("");
   const [registroExitoso, setRegistroExitoso] = useState(false);
   const [mostrarHorarios, setMostrarHorarios] = useState(false);
+
+  // Verificar automáticamente si llegó la fecha de cierre.
+  useEffect(() => {
+    const verificarCierre = () => {
+      setFormularioCerrado(Date.now() >= FECHA_CIERRE);
+    };
+
+    verificarCierre();
+
+    const intervalo = window.setInterval(verificarCierre, 1000);
+
+    return () => window.clearInterval(intervalo);
+  }, []);
 
   // Cargar los cursos y horarios cuando se selecciona una sección
     useEffect(() => {
@@ -113,6 +136,10 @@ export default function SharingDayPage() {
 
     // Buscar al padre o apoderado
     async function buscarPadre() {
+        if (Date.now() >= FECHA_CIERRE) {
+          setFormularioCerrado(true);
+          return;
+        }
         setMensaje("");
         setCodigoPariente(null);
         setMostrarHorarios(false);
@@ -176,6 +203,10 @@ export default function SharingDayPage() {
     }
 
     async function registrarTurno() {
+      if (Date.now() >= FECHA_CIERRE) {
+        setFormularioCerrado(true);
+        return;
+      }
     setMensajeRegistro("");
     setRegistroExitoso(false);
 
@@ -267,7 +298,7 @@ export default function SharingDayPage() {
               <label htmlFor="seccion">Sección *</label>
               <select
                 id="seccion"
-                disabled={readOnly}
+                disabled={formularioCerrado || readOnly}
                 value={seccion!}
                 onChange={async (event) => {
                   setSeccion(Number(event.target.value));
@@ -333,6 +364,7 @@ export default function SharingDayPage() {
                 }
                 value={documento}
                 maxLength={9}
+                disabled={formularioCerrado || buscando}
                 onChange={(event) => {
                   setDocumento(
                     event.target.value.replace(/\D/g, "").slice(0, 9),
@@ -346,7 +378,7 @@ export default function SharingDayPage() {
               <button
                 type="submit"
                 className="sharing-boton-buscar"
-                disabled={buscando}
+                disabled={formularioCerrado || buscando}
               >
                 <Search size={19} aria-hidden="true" />
                 {buscando ? "Buscando..." : "Buscar"}
@@ -423,6 +455,7 @@ export default function SharingDayPage() {
                             setTurnoSeleccionado(turno.codigoTurno)
                         }
                         aria-pressed={seleccionado}
+                        disabled={formularioCerrado}
                         >
                         <div className="sharing-turno-icono">
                             <BookOpen size={22} aria-hidden="true" />
@@ -501,10 +534,11 @@ export default function SharingDayPage() {
                 className="sharing-btn-registrar"
                 onClick={registrarTurno}
                 disabled={
-                registrando ||
-                registroExitoso ||
-                codigoPariente === null ||
-                turnoSeleccionado === null
+                  formularioCerrado ||
+                  registrando ||
+                  registroExitoso ||
+                  codigoPariente === null ||
+                  turnoSeleccionado === null
                 }
             >
                 {registrando ? "Registrando..." : "Registrar participación"}
@@ -533,6 +567,7 @@ export default function SharingDayPage() {
         onClose={() => setMostrarModalSinCupos(false)}
         />
       </section>
+      <ModalFormularioCerrado isOpen={formularioCerrado} />
     </main>
   );
 }
