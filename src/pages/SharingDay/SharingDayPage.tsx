@@ -47,7 +47,7 @@ export default function SharingDayPage() {
   const [documento, setDocumento] = useState("");
   const [buscando, setBuscando] = useState(false);
   const [mensaje, setMensaje] = useState("");
-  const [codigoPariente, setCodigoPariente] = useState<number | null>(null);
+  const [codigoPariente, setCodigoPariente] = useState<string | null>(null);
   const [tipoMensaje, setTipoMensaje] = useState<
     "error" | "info" | "exito"
   >("info");
@@ -157,7 +157,7 @@ export default function SharingDayPage() {
                 return;
             }
 
-            setCodigoPariente(Number(response.codigoPariente));
+            setCodigoPariente(response.codigoPariente);
             setTipoMensaje("exito");
             setMensaje(response.nombreCompleto ?? "");
 

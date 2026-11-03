@@ -70,6 +70,6 @@ export async function registrarParticipacion(
 ): Promise<void> {
   await api<void>('/Sharingday/Inscripcion', {
     method: 'POST',
-    body: JSON.stringify({..._datos, codigoPariente: String(_datos.codigoPariente)}),
+    body: JSON.stringify(_datos),
   });
 }

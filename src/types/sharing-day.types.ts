@@ -25,6 +25,7 @@ export interface BuscarPadreRequest {
 export interface PadreFamilia {
   nombreCompleto: string;
   numeroDocumento: string;
+  codigoPariente: string;
 }
 
 /** Turnos disponibles para un grado y una sección. */
@@ -37,14 +38,14 @@ export interface Turno {
 
 /** Datos enviados para registrar la participación. */
 export interface RegistrarParticipacionRequest {
-  codigoPariente: number;
+  codigoPariente: string;
   CodigoTurno: number;
 }
 
 export interface PadreFamilia {
   nombreCompleto: string;
   numeroDocumento: string;
-  codigoPariente: number;
+  codigoPariente: string;
   codigoAlumno?: number;
   nombreAlumno?: string;
 }
